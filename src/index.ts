@@ -32,9 +32,14 @@ function test() {
 
 }
 function todayUpdate() {
+    // ログのsheetを読み込み
     const ss = SpreadsheetApp.openById("");
     const log_sheet = ss.getSheetByName("records");
+
+    // ログの時刻部分だけ読み込み
     const log_iffft_datetime_values: string[] = transpose(log_sheet.getRange(2, 1, log_sheet.getLastRow() - 1, 1).getValues())[0];
+
+    // 今日のログがあるのか？
     const now = new Date();
     const today_start_datetime = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 4, 0, 0);
     for (var idx=0;idx<log_iffft_datetime_values.length;idx++) {
@@ -44,19 +49,17 @@ function todayUpdate() {
             break;
         }
     }
-
-    // 今日のログがない場合
-    if (idx === log_iffft_datetime_values.length) {
+    if (idx === log_iffft_datetime_values.length) { // 今日のログがない場合
         return;
     }
 
+    // 今日更新されたのログを取得
     const start_row = idx+2;
     const today_log_values = log_sheet.getRange(start_row, 1, log_sheet.getLastRow() - 1, 5).getValues();
 
-    
+    // 色つけするべきセルの場所を修正
     const template_sheet = ss.getSheetByName('template');
     const date_values = transpose(template_sheet.getRange(2, 1, template_sheet.getLastRow() - 1, 1).getValues())[0];
-
     var target_row_column = [1, 1];
     for (var idx=0;idx<date_values.length-1;idx++) {
         if (date_values[idx] <= today_start_datetime && today_start_datetime < date_values[idx+1]) {
