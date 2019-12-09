@@ -60,7 +60,7 @@ function todayUpdate() {
     var target_row_column = [1, 1];
     for (var idx=0;idx<date_values.length-1;idx++) {
         if (date_values[idx] <= today_start_datetime && today_start_datetime < date_values[idx+1]) {
-            for (var n_days=0;n_days<6;n_days++) {
+            for (var n_days=0;n_days<7;n_days++) {
                 if (plusDays(date_values[idx], n_days) <= today_start_datetime && today_start_datetime < plusDays(date_values[idx], n_days+1)) {
                     target_row_column =  [idx+2, n_days+2];
                     break
